@@ -11,6 +11,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex: 1;
 }
 
 #calculator {
@@ -32,7 +33,7 @@ main {
 }
 
 #calculation {
-  font-size: 24px;
+  font-size: 28px;
 }
 
 #input {
@@ -41,9 +42,9 @@ main {
 }
 
 button {
-  font-size: 32px;
-  height: 70px;
-  width: 70px;
+  font-size: 48px;
+  height: 92px;
+  width: 92px;
   margin: 3px 1px;
   border-radius: 8px;
 }
@@ -73,5 +74,5 @@ button {
 }
 
 #zero {
-  width: 145px;
+  width: 48%;
 }
