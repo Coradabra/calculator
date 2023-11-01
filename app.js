@@ -17,6 +17,7 @@ const btnConfig = [
   { selector: "#clear", action: "clear", payload: "clear" },
   { selector: "#negative-toggle", action: "toggle" },
   { selector: "#percentage", action: "percentage" },
+  { selector: "#decimal", action: "input", payload: "." },
 ];
 
 const operatorSymbols = {
@@ -61,14 +62,15 @@ const evaluate = () => {
 const setInputValue = (newValue, clear = false) => {
   if (clear) {
     inputValue = "0";
-    inputDisplay.textContent = inputValue;
-  } else if (inputValue === "0") {
+  }
+  if (inputValue === "0") {
     inputValue = newValue;
-    inputDisplay.textContent = inputValue;
   } else {
     inputValue = inputValue + newValue;
-    inputDisplay.textContent = inputValue;
   }
+
+  inputDisplay.textContent = inputValue;
+  return;
 };
 
 const setFirstValue = (newValue) => {
@@ -121,6 +123,10 @@ const buttonReducer = (action, payload) => {
       setSecondValue("");
       setOperator("");
       setInputValue("0", true);
+      return;
+    case "toggle":
+      return;
+    case "percentage":
       return;
   }
 };
