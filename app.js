@@ -44,15 +44,15 @@ const evaluate = () => {
       inputDisplay.textContent = inputValue;
       return;
     case "minus":
-      inputValue = (a - b).toString();
+      inputValue = `${a - b}`;
       inputDisplay.textContent = inputValue;
       return;
     case "multiply":
-      inputValue = (a * b).toString();
+      inputValue = `${a * b}`;
       inputDisplay.textContent = inputValue;
       return;
     case "divide":
-      inputValue = (a / b).toString();
+      inputValue = `${a / b}`;
       inputDisplay.textContent = inputValue;
       return;
   }
@@ -92,15 +92,24 @@ const buttonReducer = (action, payload) => {
       setInputValue(payload);
       return;
     case "operator":
-      if (firstValue === "") {
+      if (secondValue !== "") {
         setFirstValue(inputValue);
-        setInputValue("", true);
-        setOperator(payload);
-      } else {
+        setSecondValue("");
         setOperator(payload);
         const answer = evaluate();
-        inputValue = answer;
-        inputDisplay.textContent = inputValue;
+        setInputValue(answer, true);
+        return;
+      }
+      if (firstValue === "") {
+        setFirstValue(inputValue);
+        setInputValue("0", true);
+        setOperator(payload);
+        return;
+      }
+      {
+        setOperator(payload);
+        const answer = evaluate();
+        setInputValue(answer, true);
       }
       return;
     case "evaluate":
