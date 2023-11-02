@@ -60,13 +60,13 @@ const evaluate = () => {
 };
 
 const setInputValue = (newValue, clear = false) => {
-  if (clear) {
-    inputValue = "0";
-  }
   if (inputValue === "0") {
     inputValue = newValue;
   } else {
     inputValue = inputValue + newValue;
+  }
+  if (clear) {
+    inputValue = "0";
   }
 
   inputDisplay.textContent = inputValue;
@@ -80,7 +80,11 @@ const setFirstValue = (newValue) => {
 
 const setSecondValue = (newValue) => {
   secondValue = newValue;
-  calculationDisplay.textContent = `${firstValue} ${operatorSymbols[operator]} ${secondValue} =`;
+  if (secondValue === "") {
+    calculationDisplay.textContent = `${firstValue} ${operatorSymbols[operator]}`;
+  } else {
+    calculationDisplay.textContent = `${firstValue} ${operatorSymbols[operator]} ${secondValue} =`;
+  }
 };
 
 const setOperator = (newValue) => {
@@ -96,10 +100,9 @@ const buttonReducer = (action, payload) => {
     case "operator":
       if (secondValue !== "") {
         setFirstValue(inputValue);
-        setSecondValue("");
         setOperator(payload);
-        const answer = evaluate();
-        setInputValue(answer, true);
+        setSecondValue("");
+        setInputValue("0", true);
         return;
       }
       if (firstValue === "") {
