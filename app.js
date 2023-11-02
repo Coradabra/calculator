@@ -34,6 +34,7 @@ let firstValue = "";
 let secondValue = "";
 let operator = "";
 let inputValue = inputDisplay.textContent;
+let negativeInput = false;
 
 const evaluate = () => {
   const a = Number(firstValue);
@@ -59,14 +60,13 @@ const evaluate = () => {
   }
 };
 
-const setInputValue = (newValue, clear = false) => {
-  if (inputValue === "0") {
+const setInputValue = (newValue, replace = false) => {
+  if (inputValue === "0" || replace) {
     inputValue = newValue;
+  } else if (inputValue === "-0") {
+    inputValue = "-" + newValue;
   } else {
     inputValue = inputValue + newValue;
-  }
-  if (clear) {
-    inputValue = "0";
   }
 
   inputDisplay.textContent = inputValue;
@@ -128,6 +128,14 @@ const buttonReducer = (action, payload) => {
       setInputValue("0", true);
       return;
     case "toggle":
+      let toggledValue = "";
+      if (negativeInput) {
+        toggledValue = inputValue.replace("-", "");
+      } else {
+        toggledValue = "-" + inputValue;
+      }
+      negativeInput = !negativeInput;
+      setInputValue(toggledValue, true);
       return;
     case "percentage":
       return;
