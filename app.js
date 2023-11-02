@@ -61,6 +61,11 @@ const evaluate = () => {
     case "multiply":
       return `${a * b}`;
     case "divide":
+      if (b === 0) {
+        buttonReducer("clear");
+        calculationDisplay.textContent = "Seriously? Try again.";
+        return;
+      }
       return `${a / b}`;
   }
 };
@@ -132,10 +137,15 @@ const buttonReducer = (action, payload) => {
       }
       return;
     case "evaluate":
-      setSecondValue(inputValue);
-      const answer = evaluate();
-      setInputValue(answer, true);
-      return;
+      if (firstValue === "") {
+        inputDisplay.textContent = "Error!";
+        return;
+      } else {
+        setSecondValue(inputValue);
+        const answer = evaluate();
+        setInputValue(answer, true);
+        return;
+      }
     case "clear":
       setFirstValue("");
       setSecondValue("");
