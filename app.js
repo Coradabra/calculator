@@ -16,7 +16,7 @@ const btnConfig = [
   { selector: "#evaluate", action: "evaluate" },
   { selector: "#clear", action: "clear", payload: "clear" },
   { selector: "#negative-toggle", action: "toggle" },
-  { selector: "#percentage", action: "percentage" },
+  { selector: "#percentage", action: "percentage", payload: "percentage" },
   { selector: "#decimal", action: "input", payload: "." },
 ];
 
@@ -25,6 +25,7 @@ const operatorSymbols = {
   minus: "−",
   multiply: "×",
   divide: "÷",
+  blank: "",
 };
 
 const calculationDisplay = document.querySelector("#calculation");
@@ -34,11 +35,19 @@ let firstValue = "";
 let secondValue = "";
 let operator = "";
 let inputValue = inputDisplay.textContent;
-let negativeInput = false;
 
 const evaluate = () => {
-  const a = Number(firstValue);
-  const b = Number(secondValue);
+  const preEvaluate = (str) => {
+    if (str.indexOf("%") >= 0) {
+      str = str.replace("%", "");
+      return Number(str) / 100;
+    } else {
+      return Number(str);
+    }
+  };
+
+  const a = preEvaluate(firstValue);
+  const b = preEvaluate(secondValue);
 
   switch (operator) {
     case "plus":
@@ -65,6 +74,9 @@ const setInputValue = (newValue, replace = false) => {
     inputValue = newValue;
   } else if (inputValue === "-0") {
     inputValue = "-" + newValue;
+  } else if (inputValue.indexOf("%") >= 0) {
+    const trimmedValue = inputValue.replace("%", "");
+    inputValue = trimmedValue + newValue + "%";
   } else {
     inputValue = inputValue + newValue;
   }
@@ -123,21 +135,28 @@ const buttonReducer = (action, payload) => {
       return;
     case "clear":
       setFirstValue("");
+      calculationDisplay.textContent = "...";
       setSecondValue("");
-      setOperator("");
+      setOperator("blank");
       setInputValue("0", true);
       return;
     case "toggle":
       let toggledValue = "";
-      if (negativeInput) {
+      if (inputValue.indexOf("-") >= 0) {
         toggledValue = inputValue.replace("-", "");
       } else {
         toggledValue = "-" + inputValue;
       }
-      negativeInput = !negativeInput;
       setInputValue(toggledValue, true);
       return;
     case "percentage":
+      let percentageValue = "";
+      if (inputValue.indexOf("%") >= 0) {
+        percentageValue = inputValue.replace("%", "");
+      } else {
+        percentageValue = inputValue + "%";
+      }
+      setInputValue(percentageValue, true);
       return;
   }
 };
