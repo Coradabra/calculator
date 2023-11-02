@@ -36,6 +36,10 @@ let secondValue = "";
 let operator = "";
 let inputValue = inputDisplay.textContent;
 
+const trimDisplayValue = (valueStr) => {
+  return valueStr.length >= 9 ? valueStr.substring(0, 9) : valueStr;
+};
+
 const evaluate = () => {
   const preEvaluate = (str) => {
     if (str.indexOf("%") >= 0) {
@@ -51,21 +55,13 @@ const evaluate = () => {
 
   switch (operator) {
     case "plus":
-      inputValue = `${a + b}`;
-      inputDisplay.textContent = inputValue;
-      return;
+      return `${a + b}`;
     case "minus":
-      inputValue = `${a - b}`;
-      inputDisplay.textContent = inputValue;
-      return;
+      return `${a - b}`;
     case "multiply":
-      inputValue = `${a * b}`;
-      inputDisplay.textContent = inputValue;
-      return;
+      return `${a * b}`;
     case "divide":
-      inputValue = `${a / b}`;
-      inputDisplay.textContent = inputValue;
-      return;
+      return `${a / b}`;
   }
 };
 
@@ -81,21 +77,27 @@ const setInputValue = (newValue, replace = false) => {
     inputValue = inputValue + newValue;
   }
 
-  inputDisplay.textContent = inputValue;
+  const displayValue = trimDisplayValue(inputValue);
+  inputDisplay.textContent = displayValue;
   return;
 };
 
 const setFirstValue = (newValue) => {
   firstValue = newValue;
-  calculationDisplay.textContent = firstValue;
+  const displayValue = trimDisplayValue(firstValue);
+  calculationDisplay.textContent = displayValue;
 };
 
 const setSecondValue = (newValue) => {
   secondValue = newValue;
+
+  const displayFirstValue = trimDisplayValue(firstValue);
+  const displaySecondValue = trimDisplayValue(secondValue);
+
   if (secondValue === "") {
-    calculationDisplay.textContent = `${firstValue} ${operatorSymbols[operator]}`;
+    calculationDisplay.textContent = `${displayFirstValue} ${operatorSymbols[operator]}`;
   } else {
-    calculationDisplay.textContent = `${firstValue} ${operatorSymbols[operator]} ${secondValue} =`;
+    calculationDisplay.textContent = `${displayFirstValue} ${operatorSymbols[operator]} ${displaySecondValue} =`;
   }
 };
 
@@ -131,14 +133,15 @@ const buttonReducer = (action, payload) => {
       return;
     case "evaluate":
       setSecondValue(inputValue);
-      evaluate();
+      const answer = evaluate();
+      setInputValue(answer, true);
       return;
     case "clear":
       setFirstValue("");
-      calculationDisplay.textContent = "...";
       setSecondValue("");
       setOperator("blank");
       setInputValue("0", true);
+      calculationDisplay.textContent = "...";
       return;
     case "toggle":
       let toggledValue = "";
