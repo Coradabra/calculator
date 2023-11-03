@@ -14,7 +14,7 @@ const btnConfig = [
   { selector: "#plus", action: "operator", payload: "plus" },
   { selector: "#minus", action: "operator", payload: "minus" },
   { selector: "#evaluate", action: "evaluate" },
-  { selector: "#clear", action: "clear", payload: "clear" },
+  { selector: "#clear", action: "clear" },
   { selector: "#negative-toggle", action: "toggle" },
   { selector: "#percentage", action: "percentage", payload: "percentage" },
   { selector: "#decimal", action: "input", payload: "." },
@@ -64,9 +64,10 @@ const evaluate = () => {
       if (b === 0) {
         buttonReducer("clear");
         calculationDisplay.textContent = "Seriously? Try again.";
-        return;
+        return "0";
+      } else {
+        return `${a / b}`;
       }
-      return `${a / b}`;
   }
 };
 
@@ -89,6 +90,7 @@ const setInputValue = (newValue, replace = false) => {
 
 const setFirstValue = (newValue) => {
   firstValue = newValue;
+
   const displayValue = trimDisplayValue(firstValue);
   calculationDisplay.textContent = displayValue;
 };

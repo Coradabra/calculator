@@ -27,7 +27,7 @@ main {
 }
 
 .display {
-  background-color: grey;
+  background-color: #40caec;
   width: 100%;
   display: flex;
   flex-direction: column;
