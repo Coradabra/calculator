@@ -72,6 +72,9 @@ const evaluate = () => {
 };
 
 const setInputValue = (newValue, replace = false) => {
+  if (inputValue.indexOf(".") >= 0 && newValue === ".") {
+    return;
+  }
   if (inputValue === "0" || replace) {
     inputValue = newValue;
   } else if (inputValue === "-0") {
