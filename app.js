@@ -18,6 +18,7 @@ const btnConfig = [
   { selector: "#negative-toggle", action: "toggle" },
   { selector: "#percentage", action: "percentage", payload: "percentage" },
   { selector: "#decimal", action: "input", payload: "." },
+  { selector: "#backspace", action: "backspace" },
 ];
 
 const operatorSymbols = {
@@ -176,6 +177,12 @@ const buttonReducer = (action, payload) => {
       }
       setInputValue(percentageValue, true);
       return;
+    case "backspace":
+      const backspacedValue =
+        inputValue.length > 1
+          ? inputValue.substring(0, inputValue.length - 1)
+          : "0";
+      setInputValue(backspacedValue, true);
   }
 };
 
