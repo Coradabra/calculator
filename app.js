@@ -1,24 +1,30 @@
 const btnConfig = [
-  { selector: "#zero", action: "input", payload: "0" },
-  { selector: "#one", action: "input", payload: "1" },
-  { selector: "#two", action: "input", payload: "2" },
-  { selector: "#three", action: "input", payload: "3" },
-  { selector: "#four", action: "input", payload: "4" },
-  { selector: "#five", action: "input", payload: "5" },
-  { selector: "#six", action: "input", payload: "6" },
-  { selector: "#seven", action: "input", payload: "7" },
-  { selector: "#eight", action: "input", payload: "8" },
-  { selector: "#nine", action: "input", payload: "9" },
-  { selector: "#divide", action: "operator", payload: "divide" },
-  { selector: "#multiply", action: "operator", payload: "multiply" },
-  { selector: "#plus", action: "operator", payload: "plus" },
+  { selector: "#zero", action: "input", payload: "0", key: "0" },
+  { selector: "#one", action: "input", payload: "1", key: "1" },
+  { selector: "#two", action: "input", payload: "2", key: "2" },
+  { selector: "#three", action: "input", payload: "3", key: "3" },
+  { selector: "#four", action: "input", payload: "4", key: "4" },
+  { selector: "#five", action: "input", payload: "5", key: "5" },
+  { selector: "#six", action: "input", payload: "6", key: "6" },
+  { selector: "#seven", action: "input", payload: "7", key: "7" },
+  { selector: "#eight", action: "input", payload: "8", key: "8" },
+  { selector: "#nine", action: "input", payload: "9", key: "9" },
+  { selector: "#divide", action: "operator", payload: "divide", key: "/" },
+  { selector: "#multiply", action: "operator", payload: "multiply", key: "*" },
+  { selector: "#plus", action: "operator", payload: "plus", key: "+" },
   { selector: "#minus", action: "operator", payload: "minus" },
-  { selector: "#evaluate", action: "evaluate" },
-  { selector: "#clear", action: "clear" },
+  { selector: "#evaluate", action: "evaluate", key: "=" },
+  { selector: "#evaluate", action: "evaluate", key: "Enter" },
+  { selector: "#clear", action: "clear", key: "Escape" },
   { selector: "#negative-toggle", action: "toggle" },
-  { selector: "#percentage", action: "percentage", payload: "percentage" },
-  { selector: "#decimal", action: "input", payload: "." },
-  { selector: "#backspace", action: "backspace" },
+  {
+    selector: "#percentage",
+    action: "percentage",
+    payload: "percentage",
+    key: "%",
+  },
+  { selector: "#decimal", action: "input", payload: ".", key: "." },
+  { selector: "#backspace", action: "backspace", key: "Backspace" },
 ];
 
 const operatorSymbols = {
@@ -31,6 +37,7 @@ const operatorSymbols = {
 
 const calculationDisplay = document.querySelector("#calculation");
 const inputDisplay = document.querySelector("#input");
+const main = document.querySelector("main");
 
 let firstValue = "";
 let secondValue = "";
@@ -192,6 +199,22 @@ const configureButtons = (selector, action, payload = "") => {
     buttonReducer(action, payload);
   });
 };
+
+const checkKey = (event) => {
+  const key = event.key;
+  const acceptedKeys = "0123456789*-+=/%.BackspaceEnterEscape";
+
+  if (acceptedKeys.includes(key)) {
+    event.preventDefault();
+    const keyProperties = btnConfig.find((config) => config.key === key);
+
+    buttonReducer(keyProperties.action, keyProperties.payload);
+    return;
+  }
+  return;
+};
+
+main.addEventListener("keydown", checkKey);
 
 for (let btn of btnConfig) {
   configureButtons(btn.selector, btn.action, btn.payload);
