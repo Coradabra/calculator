@@ -37,7 +37,7 @@ const operatorSymbols = {
 
 const calculationDisplay = document.querySelector("#calculation");
 const inputDisplay = document.querySelector("#input");
-const main = document.querySelector("main");
+const body = document.querySelector("body");
 
 let firstValue = "";
 let secondValue = "";
@@ -214,7 +214,7 @@ const checkKey = (event) => {
   return;
 };
 
-main.addEventListener("keydown", checkKey);
+body.addEventListener("keydown", checkKey);
 
 for (let btn of btnConfig) {
   configureButtons(btn.selector, btn.action, btn.payload);
